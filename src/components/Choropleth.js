@@ -85,12 +85,12 @@ export default class Choropleth extends BaseComponent {
 
   // generate css string from colors array
   css () {
-    let _css = '';
+    let css = '';
     let colors = this.props.settings.colors;
     for (var i = 0; i < this.levels; i++) {
       css += `.q${i}-${this.levels} { fill:${colors[i]}; }`;
     }
-    return _css;
+    return css;
   }
 
 	render () {
