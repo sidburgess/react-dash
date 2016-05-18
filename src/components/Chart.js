@@ -8,7 +8,7 @@ export default class Chart extends BaseComponent {
   render() {
     let data = this.getData() || [];
     let settings = Object.assign({datum: data}, this.props.settings);
-
+    console.log('1',data,settings);
     return (
       <Loader isFeching={this.state.isFeching}>
         <NVD3Chart {...settings}/>
