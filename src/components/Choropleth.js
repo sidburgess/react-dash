@@ -25,6 +25,7 @@ import {mesh, feature} from 'topojson';
 import {range, format} from 'd3';
 import Dataset from '../models/Dataset';
 import FilterSelect from './FilterSelect';
+import Loader from './Loader';
 
 const DEFAULT_PROJECTION = 'azimuthalEqualArea';
 
@@ -59,7 +60,6 @@ export default class Choropleth extends BaseComponent {
     this.state.settings = this.props.settings;
     this.randKey = makeKey(4);
     this.state.current_filter = this.state.settings.filters[0];
-//    this.filterChoropleth(null, this.state.current_filter.field);
     (this.state.settings.filters.length > 1) ? this.state.render_select = true : this.state.render_select = false;
 	}
   
@@ -239,8 +239,10 @@ export default class Choropleth extends BaseComponent {
         opts.dataPolygon = opts.topodata.features;
       }
       
-      v = <div className="choropleth-container">
-            <div class="choropleth-select">
+      v = 
+      <Loader isFeching={this.state.isFeching}>
+      <div className="choropleth-container">
+        <div class="choropleth-select">
           {(this.state.render_select) ? (
                 <select class="filter-select" onChange={this.filterChoropleth.bind(this)} value={this.state.filterValue}>
                     {
@@ -264,7 +266,8 @@ export default class Choropleth extends BaseComponent {
                 chartSeries = {this.legendSeries()}
               />
             </div>
-         </div>;
+       </div>
+       </Loader>;
    } else {
       v = <p ref="choropleth" className='loading'>Loading...</p>;
    }
