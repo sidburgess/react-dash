@@ -63,7 +63,7 @@ export var settings = {
           domainStartValue: '',
           domainEndValue: '',
         },
-        offset: [150, 500]
+       // offset: [150, 500]
         // customMin: '',
         // customMax: '',
         // topologyObject: 'counties'

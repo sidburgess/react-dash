@@ -74,6 +74,7 @@ export default class Datamap extends Component {
           value={subunitValue}
           svgResized={this.state.svgResized}
           componentWidth={this.props.componentWidth}
+          svgWidth = {this.props.componentWidth}
           fillColor={fillColor}
           borderColor={borderColor}
           mouseEnterOnSubunit={this.handleMouseEnterOnSubunit}
@@ -83,6 +84,7 @@ export default class Datamap extends Component {
   }
 
   render() {
+    console.log('Datamap render', this);
     return (
       <g
         onMouseMove={this.props.mouseMoveOnDatamap}

@@ -108,7 +108,7 @@ export default class Choropleth extends BaseComponent {
     const borderColor = this.props.borderColor || '#cccccc';
     const geometryFeatures = this.state.geometryFeatures || [];
     const loading = this.state.geometryFeatures && this.state.data;
-    const offset = this.props.offset || [svgWidth / 2, svgHeight / 2];
+    const offset = this.props.offset || [svgWidth / 4, svgHeight * .9];
 
     const svgStyle = {
       width: svgWidth,
