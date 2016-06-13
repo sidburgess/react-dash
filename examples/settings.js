@@ -50,7 +50,7 @@ export var settings = {
         geometryKeyField: 'name',
         geometry: './data/zones.geojson', // topojson or geojson
         projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
-        scaleDenominator: .7,
+        scaleDenominator: .4,
         borderColor: '#000000',
         noDataColor: '#F3F3F3',
         startColor: 'red',
@@ -62,7 +62,8 @@ export var settings = {
           pallete: ['#f0f9e8', '#bae4bc', '#7bccc4', '#43a2ca', '#0868ac'],
           domainStartValue: '',
           domainEndValue: '',
-        }
+        },
+        offset: [150, 500]
         // customMin: '',
         // customMax: '',
         // topologyObject: 'counties'

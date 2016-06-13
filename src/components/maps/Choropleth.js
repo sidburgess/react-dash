@@ -81,7 +81,8 @@ export default class Choropleth extends BaseComponent {
   }
 
   render() {
-    const svgWidth = this.state.componentWidth * .8;
+    console.log('CH render', this);
+    const svgWidth = this.state.componentWidth;
     const svgHeight = svgWidth * 0.8;
     const extremeValues = this.extremeValues();
 
@@ -107,6 +108,7 @@ export default class Choropleth extends BaseComponent {
     const borderColor = this.props.borderColor || '#cccccc';
     const geometryFeatures = this.state.geometryFeatures || [];
     const loading = this.state.geometryFeatures && this.state.data;
+    const offset = this.props.offset || [svgWidth / 2, svgHeight / 2];
 
     const svgStyle = {
       width: svgWidth,
@@ -127,6 +129,7 @@ export default class Choropleth extends BaseComponent {
                 borderColor={borderColor}
                 svgWidth={svgWidth}
                 svgHeight={svgHeight}
+                offset={offset}
                 svgResized={this.state.svgResized}
                 componentWidth={this.state.componentWidth}
                 mouseMoveOnDatamap={this.mouseMoveOnDatamap.bind(this)}

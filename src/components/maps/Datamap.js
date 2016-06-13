@@ -34,7 +34,7 @@ export default class Datamap extends Component {
     const scaleDenominator = this.props.scaleDenominator
 
     const projection = d3.geo[projectionName]().scale(svgWidth / scaleDenominator)
-      .translate([svgWidth / 2, svgHeight / 2])
+      .translate(this.props.offset)
 
     return d3.geo.path().projection(projection)
   }
