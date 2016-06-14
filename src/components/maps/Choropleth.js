@@ -35,7 +35,7 @@ export default class Choropleth extends BaseComponent {
           ).features;
         }
         console.log('geo bounds', d3.geo.bounds(geometryFeatures[0]), geometryFeatures, this.getBounds(geometryFeatures));        
-        this.setState({geometryFeatures })
+        this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
       });
   }
 
@@ -49,6 +49,7 @@ export default class Choropleth extends BaseComponent {
       outerBounds[1][1] = Math.max(bounds[1][1], outerBounds[1][1]);
     });
     console.log('outerbounds', outerBounds);
+    return outerBounds;
   }
 
   extremeValues(){
@@ -136,6 +137,7 @@ export default class Choropleth extends BaseComponent {
               <Datamap
                 {...this.props}
                 geometry={geometryFeatures}
+                outerBounds={this.state.outerBounds}
                 colorScale={colorScale}
                 noDataColor={noDataColor}
                 borderColor={borderColor}

@@ -14,6 +14,7 @@ export default class Datamap extends Component {
       geometryFeatures: this.props.geometry,
       path: this.path(this.props.svgWidth, this.props.svgHeight),
       svgResized: false,
+      defaultScale: this.getDefaultScale()
     }
   }
 
@@ -32,11 +33,31 @@ export default class Datamap extends Component {
   path(svgWidth, svgHeight) {
     const projectionName = this.props.projection
     const scaleDenominator = this.props.scaleDenominator
+    const {defaultScale, defaultTranslate} = this.getDefaultScale();
+    const scale = this.props.scale || defaultScale;
+    const translate = this.props.translate || defaultTranslate;
 
-    const projection = d3.geo[projectionName]().scale(svgWidth / scaleDenominator)
-      .translate(this.props.offset)
+    console.log('..',defaultScale,defaultTranslate);
+    const projection = d3.geo[projectionName]().scale(scale)
+    //  .translate(translate)
 
     return d3.geo.path().projection(projection)
+  }
+  
+  getDefaultScale() {
+    let bounds = this.props.outerBounds;
+		let dx = bounds[1][0] - bounds[0][0];
+    let dy = bounds[1][1] - bounds[0][1];
+    let x = (bounds[0][0] + bounds[1][0]) / 2;
+    let y = (bounds[0][1] + bounds[1][1]) / 2;
+    let scaleDenominator = this.props.scaleDenominator || .9
+    let width = this.props.componentWidth;
+    let height = width * .8;
+    let scale = scaleDenominator / Math.max(dx / width, dy / height);
+    let translate = [width / 2 - scale * x, height / 2 - scale * y];
+		console.log('getDefScale', scale, translate);
+		console.log('getDefScaleparams', bounds, dx, dy, x, y, width, height);
+		return ({defaultScale: scale, defaultTranslate: translate});
   }
 
   handleMouseEnterOnSubunit(name, value, index) {
@@ -74,7 +95,8 @@ export default class Datamap extends Component {
           value={subunitValue}
           svgResized={this.state.svgResized}
           componentWidth={this.props.componentWidth}
-          svgWidth = {this.props.componentWidth}
+          svgWidth={this.props.componentWidth}
+          outerBounds={this.props.outerBounds}
           fillColor={fillColor}
           borderColor={borderColor}
           mouseEnterOnSubunit={this.handleMouseEnterOnSubunit}
