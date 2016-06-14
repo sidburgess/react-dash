@@ -50,7 +50,6 @@ export var settings = {
         geometryKeyField: 'name',
         geometry: './data/zones.geojson', // topojson or geojson
         projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
-        scaleDenominator: .4,
         borderColor: '#000000',
         noDataColor: '#F3F3F3',
         startColor: 'red',

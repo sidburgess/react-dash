@@ -41,12 +41,22 @@ export default class Choropleth extends BaseComponent {
 
   getBounds(geometry) {
     let outerBounds = [[0,0], [0,0]]; 
-    geometry.forEach(g => {
+    geometry.forEach((g,i) => {
+      console.log(i);
       let bounds = d3.geo.bounds(g);
-      outerBounds[0][0] = Math.max(bounds[0][0], outerBounds[0][0]);
-      outerBounds[0][1] = Math.max(bounds[0][1], outerBounds[0][1]);
-      outerBounds[1][0] = Math.max(bounds[1][0], outerBounds[1][0]);
-      outerBounds[1][1] = Math.max(bounds[1][1], outerBounds[1][1]);
+      // initialize values
+      if (i === 0) {
+        console.log('init',bounds);
+        outerBounds[0][0] = bounds[0][0];
+        outerBounds[0][1] = bounds[0][1];
+        outerBounds[1][0] = bounds[1][0];
+        outerBounds[1][1] = bounds[1][1];
+      } else {
+        outerBounds[0][0] = Math.min(outerBounds[0][0], bounds[0][0]);
+        outerBounds[0][1] = Math.min(outerBounds[0][1], bounds[0][1]);
+        outerBounds[1][0] = Math.max(outerBounds[1][0], bounds[1][0]);
+        outerBounds[1][1] = Math.max(outerBounds[1][1], bounds[1][1]);
+      }
     });
     console.log('outerbounds', outerBounds);
     return outerBounds;

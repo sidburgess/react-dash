@@ -37,13 +37,13 @@ export default class Datamap extends Component {
     const scale = this.props.scale || defaultScale;
     const translate = this.props.translate || defaultTranslate;
 
-    console.log('..',defaultScale,defaultTranslate);
     const projection = d3.geo[projectionName]().scale(scale)
-    //  .translate(translate)
+      .translate(translate)
 
     return d3.geo.path().projection(projection)
   }
   
+  // solution adapted from https://bl.ocks.org/mbostock/4699541
   getDefaultScale() {
     let bounds = this.props.outerBounds;
 		let dx = bounds[1][0] - bounds[0][0];
@@ -53,10 +53,10 @@ export default class Datamap extends Component {
     let scaleDenominator = this.props.scaleDenominator || .9
     let width = this.props.componentWidth;
     let height = width * .8;
-    let scale = scaleDenominator / Math.max(dx / width, dy / height);
+    let scale = .9 / dx / width;
     let translate = [width / 2 - scale * x, height / 2 - scale * y];
 		console.log('getDefScale', scale, translate);
-		console.log('getDefScaleparams', bounds, dx, dy, x, y, width, height);
+		console.log('getDefScaleparams', bounds, scaleDenominator, dx, dy, x, y, width, height);
 		return ({defaultScale: scale, defaultTranslate: translate});
   }
 
