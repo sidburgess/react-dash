@@ -14,7 +14,7 @@ export default class Datamap extends Component {
       geometryFeatures: this.props.geometry,
       path: this.path(this.props.svgWidth, this.props.svgHeight),
       svgResized: false,
-      defaultScale: this.getDefaultScale()
+//      defaultScale: this.getDefaultScale()
     }
   }
 
@@ -31,14 +31,14 @@ export default class Datamap extends Component {
   }
 
   path(svgWidth, svgHeight) {
-    const projectionName = this.props.projection
+    const projectionName = 'albersUsa'; //this.props.projection
     const scaleDenominator = this.props.scaleDenominator
-    const {defaultScale, defaultTranslate} = this.getDefaultScale();
-    const scale = this.props.scale || defaultScale;
-    const translate = this.props.translate || defaultTranslate;
+//    const {defaultScale, defaultTranslate} = this.getDefaultScale();
+ //   const scale = this.props.scale || defaultScale;
+  //  const translate = this.props.translate || defaultTranslate;
 
-    const projection = d3.geo[projectionName]().scale(scale)
-      .translate(translate)
+    const projection = d3.geo[projectionName]().scale(1280)
+      .translate([480, 300])
 
     return d3.geo.path().projection(projection)
   }
@@ -50,9 +50,9 @@ export default class Datamap extends Component {
     let dy = bounds[1][1] - bounds[0][1];
     let x = (bounds[0][0] + bounds[1][0]) / 2;
     let y = (bounds[0][1] + bounds[1][1]) / 2;
-    let scaleDenominator = this.props.scaleDenominator || .9
+    let scaleDenominator = this.props.scaleDenominator || .9 // magic number - is this related to the projection?
     let width = this.props.componentWidth;
-    let height = width * .8;
+    let height = width * .8; // aspect ration
     let scale = .9 / dx / width;
     let translate = [width / 2 - scale * x, height / 2 - scale * y];
 		console.log('getDefScale', scale, translate);

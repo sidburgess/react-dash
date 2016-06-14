@@ -35,18 +35,18 @@ export default class Choropleth extends BaseComponent {
           ).features;
         }
         console.log('geo bounds', d3.geo.bounds(geometryFeatures[0]), geometryFeatures, this.getBounds(geometryFeatures));        
-        this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
+        this.setState({geometryFeatures : geometryFeatures});
+        // this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
       });
   }
-
+  
+  // need to double check this is correct
   getBounds(geometry) {
-    let outerBounds = [[0,0], [0,0]]; 
+    let outerBounds = [[0,0], [0,0]]; // placeholder values
     geometry.forEach((g,i) => {
-      console.log(i);
       let bounds = d3.geo.bounds(g);
       // initialize values
       if (i === 0) {
-        console.log('init',bounds);
         outerBounds[0][0] = bounds[0][0];
         outerBounds[0][1] = bounds[0][1];
         outerBounds[1][0] = bounds[1][0];
@@ -58,7 +58,6 @@ export default class Choropleth extends BaseComponent {
         outerBounds[1][1] = Math.max(outerBounds[1][1], bounds[1][1]);
       }
     });
-    console.log('outerbounds', outerBounds);
     return outerBounds;
   }
 

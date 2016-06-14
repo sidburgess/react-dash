@@ -37,19 +37,20 @@ export var settings = {
       },
       {
         type: 'Choropleth',
-        format: 'geojson',
+        format: 'topojson',
         fetchData: {
-          url: './data/apollo-parsed-1737-325_0.csv',
+          url: './data/unemployment.tsv',
           type: 'backend',
           backend: 'csv',
-          // delimiter: '\t'
+          delimiter: '\t'
         },
         id: 'Choropleth',
-        dataKeyField: 'Zone',
-        dataValueField: 'Total Observers',
-        geometryKeyField: 'name',
-        geometry: './data/zones.geojson', // topojson or geojson
-        projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
+        dataKeyField: 'id',
+        dataValueField: 'rate',
+        geometryKeyField: 'id',
+        geometry: './data/us.json', // topojson or geojson
+        //projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
+        projection: 'azimuthalEqualArea', // https://github.com/d3/d3/wiki/Geo-Projections
         borderColor: '#000000',
         noDataColor: '#F3F3F3',
         startColor: 'red',
@@ -65,7 +66,7 @@ export var settings = {
        // offset: [150, 500]
         // customMin: '',
         // customMax: '',
-        // topologyObject: 'counties'
+        topologyObject: 'counties'
       }
     ],
     middleFirst: [
