@@ -34,9 +34,21 @@ export default class Choropleth extends BaseComponent {
             data.objects[this.props.topologyObject]
           ).features;
         }
-
+        console.log('geo bounds', d3.geo.bounds(geometryFeatures[0]), geometryFeatures, this.getBounds(geometryFeatures));        
         this.setState({geometryFeatures })
       });
+  }
+
+  getBounds(geometry) {
+    let outerBounds = [[0,0], [0,0]]; 
+    geometry.forEach(g => {
+      let bounds = d3.geo.bounds(g);
+      outerBounds[0][0] = Math.max(bounds[0][0], outerBounds[0][0]);
+      outerBounds[0][1] = Math.max(bounds[0][1], outerBounds[0][1]);
+      outerBounds[1][0] = Math.max(bounds[1][0], outerBounds[1][0]);
+      outerBounds[1][1] = Math.max(bounds[1][1], outerBounds[1][1]);
+    });
+    console.log('outerbounds', outerBounds);
   }
 
   extremeValues(){
@@ -108,7 +120,7 @@ export default class Choropleth extends BaseComponent {
     const borderColor = this.props.borderColor || '#cccccc';
     const geometryFeatures = this.state.geometryFeatures || [];
     const loading = this.state.geometryFeatures && this.state.data;
-    const offset = this.props.offset || [svgWidth / 4, svgHeight * .9];
+    const offset = this.props.offset || [svgWidth / 2, svgHeight / 2];
 
     const svgStyle = {
       width: svgWidth,
