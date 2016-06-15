@@ -57,6 +57,7 @@ export var settings = {
         startColor: 'red',
         endColor: 'yellow',
         dataClassification: 'linear',
+        heightPerCent: .6, // height of map container as percent of width
         legend: {
           classesCount: 5,
           palleteKey: 'GnBu',

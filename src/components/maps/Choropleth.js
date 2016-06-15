@@ -97,7 +97,7 @@ export default class Choropleth extends BaseComponent {
 
   render() {
     const svgWidth = this.state.componentWidth || 0;
-    const svgHeight = svgWidth * 0.8;
+    const svgHeight = svgWidth * this.props.heightPerCent || 0.8;
     const extremeValues = this.extremeValues();
     console.log('11',svgWidth);
     const {
@@ -145,8 +145,6 @@ export default class Choropleth extends BaseComponent {
                 svgWidth={svgWidth}
                 svgHeight={svgHeight}
                 offset={offset}
-                svgResized={this.state.svgResized}
-                componentWidth={this.state.componentWidth}
                 mouseMoveOnDatamap={this.mouseMoveOnDatamap.bind(this)}
                 mouseEnterOnDatamap={this.mouseEnterOnDatamap.bind(this)}
                 mouseLeaveDatamap={this.mouseLeaveDatamap.bind(this)}
