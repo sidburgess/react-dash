@@ -34,13 +34,10 @@ export default class Choropleth extends BaseComponent {
             data.objects[this.props.topologyObject]
           ).features;
         }
-        console.log('geo bounds', d3.geo.bounds(geometryFeatures[0]), geometryFeatures, this.getBounds(geometryFeatures));        
-//        this.setState({geometryFeatures : geometryFeatures});
          this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
       });
   }
   
-  // need to double check this is correct
   getBounds(geometry) {
     let outerBounds = [[0,0], [0,0]]; // placeholder values
     geometry.forEach((g,i) => {
@@ -97,17 +94,12 @@ export default class Choropleth extends BaseComponent {
       activeSubunitValue: value,
     });
   }
-  
-  onResize() {
-    this.setState({svgResized: true});
-  }
 
   render() {
-    console.log('CH render', this);
     const svgWidth = this.state.componentWidth || 0;
     const svgHeight = svgWidth * 0.8;
     const extremeValues = this.extremeValues();
-
+    console.log('11',svgWidth);
     const {
       infoWindowPos,
       infoWindowActive,

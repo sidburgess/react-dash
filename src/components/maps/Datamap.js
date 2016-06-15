@@ -3,8 +3,6 @@ import d3 from 'd3'
 import Registry from '../../utils/Registry';
 import DatamapSubunit from './DatamapSubunit';
 
-
-
 export default class Datamap extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +12,6 @@ export default class Datamap extends Component {
       geometryFeatures: this.props.geometry,
       path: this.path(this.props.svgWidth, this.props.svgHeight),
       svgResized: false,
-//      defaultScale: this.getDefaultScale()
     }
   }
 
@@ -28,11 +25,6 @@ export default class Datamap extends Component {
     const geometryFeatures = geometry;
 
     this.setState({ path, geometryFeatures })
-  }
-  
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('dm should', nextProps, this);
-    return true;
   }
   
   path(svgWidth, svgHeight) {
@@ -55,13 +47,13 @@ export default class Datamap extends Component {
     let dy = bounds[1][1] - bounds[0][1];
     let x = (bounds[0][0] + bounds[1][0]) / 2;
     let y = (bounds[0][1] + bounds[1][1]) / 2;
-    let scaleDenominator = this.props.scaleDenominator || .9 // magic number - is this related to the projection?
     let width = this.props.componentWidth;
     let height = width; // aspect ration
-    let scale =  width / dx * 12;
+    let scaleFactor = this.props.scaleFactor || 20;
+    let scale =  width / dx * scaleFactor;
     let translate = [(dx + scale) / 2, (dy + scale) / 4];
-		console.log('getDefScale', scale, translate);
-		console.log('getDefScaleparams', bounds, scaleDenominator, dx, dy, x, y, width, height);
+//		console.log('getDefScale', scale, translate);
+//		console.log('getDefScaleparams', bounds, scaleFactor, dx, dy, x, y, width, height);
 		return ({defaultScale: scale, defaultTranslate: translate, center: [dx, dy]});
   }
 
@@ -78,7 +70,6 @@ export default class Datamap extends Component {
   }
 
   renderDatamapSubunits() {
-//    console.log('render subunits', this);
     const { colorScale, noDataColor, borderColor } = this.props
 
     return this.state.geometryFeatures.map((feature, index) => {
@@ -100,9 +91,6 @@ export default class Datamap extends Component {
           name={String(key)}
           value={subunitValue}
           svgResized={this.state.svgResized}
-          componentWidth={this.props.componentWidth}
-          svgWidth={this.props.componentWidth}
-          outerBounds={this.props.outerBounds}
           fillColor={fillColor}
           borderColor={borderColor}
           mouseEnterOnSubunit={this.handleMouseEnterOnSubunit}
@@ -112,7 +100,6 @@ export default class Datamap extends Component {
   }
 
   render() {
-    console.log('Datamap render', this);
     return (
       <g
         onMouseMove={this.props.mouseMoveOnDatamap}

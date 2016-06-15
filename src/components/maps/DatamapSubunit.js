@@ -12,11 +12,12 @@ export default class DatamapSubunit extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const should = nextProps.svgResized !== this.props.svgResized ||
+    const should = 
+      //nextState.svgResized ||
       nextState.active !== this.state.active ||
       nextProps.fillColor !== this.props.fillColor ||
       nextProps.borderColor !== this.props.borderColor ||
-      nextProps.componentWidth !== this.props.componentWidth;
+      nextProps.path !== this.props.path
       console.log(should, this.props, nextProps);
     return should;
   }
@@ -33,6 +34,7 @@ export default class DatamapSubunit extends Component {
   }
 
   render() {
+    console.log('renderSubunit');
     const subutniStyle = {
       fill: this.state.active ? '#FFCCBC' : this.props.fillColor,
       stroke: this.state.active ? '#FF5722' : this.props.borderColor,
@@ -55,7 +57,6 @@ DatamapSubunit.propTypes = {
   mouseEnterOnSubunit: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  svgResized: PropTypes.bool.isRequired,
   fillColor: PropTypes.string.isRequired,
   borderColor: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
