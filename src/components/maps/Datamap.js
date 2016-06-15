@@ -29,16 +29,21 @@ export default class Datamap extends Component {
 
     this.setState({ path, geometryFeatures })
   }
-
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('dm should', nextProps, this);
+    return true;
+  }
+  
   path(svgWidth, svgHeight) {
-    const projectionName = 'albersUsa'; //this.props.projection
+    const projectionName = this.props.projection
     const scaleDenominator = this.props.scaleDenominator
-//    const {defaultScale, defaultTranslate} = this.getDefaultScale();
- //   const scale = this.props.scale || defaultScale;
-  //  const translate = this.props.translate || defaultTranslate;
+    const {defaultScale, defaultTranslate, center} = this.getDefaultScale();
+    const scale = this.props.scale || defaultScale;
+    const translate = this.props.translate || defaultTranslate;
 
-    const projection = d3.geo[projectionName]().scale(1280)
-      .translate([480, 300])
+    const projection = d3.geo[projectionName]().scale(scale).center(center)
+      .translate(translate) // defaults to [480 ,250]
 
     return d3.geo.path().projection(projection)
   }
@@ -52,12 +57,12 @@ export default class Datamap extends Component {
     let y = (bounds[0][1] + bounds[1][1]) / 2;
     let scaleDenominator = this.props.scaleDenominator || .9 // magic number - is this related to the projection?
     let width = this.props.componentWidth;
-    let height = width * .8; // aspect ration
-    let scale = .9 / dx / width;
-    let translate = [width / 2 - scale * x, height / 2 - scale * y];
+    let height = width; // aspect ration
+    let scale =  width / dx * 12;
+    let translate = [(dx + scale) / 2, (dy + scale) / 4];
 		console.log('getDefScale', scale, translate);
 		console.log('getDefScaleparams', bounds, scaleDenominator, dx, dy, x, y, width, height);
-		return ({defaultScale: scale, defaultTranslate: translate});
+		return ({defaultScale: scale, defaultTranslate: translate, center: [dx, dy]});
   }
 
   handleMouseEnterOnSubunit(name, value, index) {
@@ -73,6 +78,7 @@ export default class Datamap extends Component {
   }
 
   renderDatamapSubunits() {
+//    console.log('render subunits', this);
     const { colorScale, noDataColor, borderColor } = this.props
 
     return this.state.geometryFeatures.map((feature, index) => {

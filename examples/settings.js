@@ -37,18 +37,19 @@ export var settings = {
       },
       {
         type: 'Choropleth',
-        format: 'topojson',
+        format: 'geojson',
         fetchData: {
-          url: './data/unemployment.tsv',
+//          url: './data/unemployment.tsv',
+          url: './data/apollo-parsed-1737-325_0.csv',
           type: 'backend',
           backend: 'csv',
-          delimiter: '\t'
+//          delimiter: '\t'
         },
         id: 'Choropleth',
-        dataKeyField: 'id',
-        dataValueField: 'rate',
-        geometryKeyField: 'id',
-        geometry: './data/us.json', // topojson or geojson
+        dataKeyField: 'Zone',
+        dataValueField: 'Accred. Time: Before 8 AM #',
+        geometryKeyField: 'name',
+        geometry: './data/zones.geojson', // topojson or geojson
         //projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
         projection: 'azimuthalEqualArea', // https://github.com/d3/d3/wiki/Geo-Projections
         borderColor: '#000000',

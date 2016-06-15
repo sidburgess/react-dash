@@ -35,8 +35,8 @@ export default class Choropleth extends BaseComponent {
           ).features;
         }
         console.log('geo bounds', d3.geo.bounds(geometryFeatures[0]), geometryFeatures, this.getBounds(geometryFeatures));        
-        this.setState({geometryFeatures : geometryFeatures});
-        // this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
+//        this.setState({geometryFeatures : geometryFeatures});
+         this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
       });
   }
   
@@ -104,7 +104,7 @@ export default class Choropleth extends BaseComponent {
 
   render() {
     console.log('CH render', this);
-    const svgWidth = this.state.componentWidth;
+    const svgWidth = this.state.componentWidth || 0;
     const svgHeight = svgWidth * 0.8;
     const extremeValues = this.extremeValues();
 

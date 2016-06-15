@@ -17,6 +17,7 @@ export default class DatamapSubunit extends Component {
       nextProps.fillColor !== this.props.fillColor ||
       nextProps.borderColor !== this.props.borderColor ||
       nextProps.componentWidth !== this.props.componentWidth;
+      console.log(should, this.props, nextProps);
     return should;
   }
 
