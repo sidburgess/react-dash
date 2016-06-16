@@ -34,7 +34,8 @@ export default class Datamap extends Component {
     const scale = this.props.scale || defaultScale;
     const translate = this.props.translate || defaultTranslate;
 
-    const projection = d3.geo[projectionName]().scale(scale).center(center)
+    const projection = d3.geo[projectionName]().scale(scale)
+      .center(center)
       .translate(translate) // defaults to [480 ,250]
 
     return d3.geo.path().projection(projection)
@@ -47,13 +48,13 @@ export default class Datamap extends Component {
     let dy = bounds[1][1] - bounds[0][1];
     let x = (bounds[0][0] + bounds[1][0]) / 2;
     let y = (bounds[0][1] + bounds[1][1]) / 2;
-    let width = this.props.componentWidth;
-    let height = width; // aspect ration
+    let width = this.props.svgWidth;
+    let height = width * .8; // aspect ration
     let scaleFactor = this.props.scaleFactor || 20;
     let scale =  width / dx * scaleFactor;
-    let translate = [(dx + scale) / 2, (dy + scale) / 4];
-//		console.log('getDefScale', scale, translate);
-//		console.log('getDefScaleparams', bounds, scaleFactor, dx, dy, x, y, width, height);
+    let translate = [width / 2 + dx, height / 4];
+		console.log('getDefScale', scale, translate);
+		console.log('getDefScaleparams', bounds, scaleFactor, dx, dy, x, y, width, height);
 		return ({defaultScale: scale, defaultTranslate: translate, center: [dx, dy]});
   }
 
@@ -70,7 +71,7 @@ export default class Datamap extends Component {
   }
 
   renderDatamapSubunits() {
-    const { colorScale, noDataColor, borderColor } = this.props
+    const { colorScale, noDataColor, borderColor, svgWidth, svgHeight } = this.props
 
     return this.state.geometryFeatures.map((feature, index) => {
       const key = (this.props.format === 'geojson') ?
@@ -87,12 +88,15 @@ export default class Datamap extends Component {
         <DatamapSubunit
           key={key}
           index={index}
-          path={() => this.state.path(feature)}
+          path={this.state.path(feature)}
           name={String(key)}
           value={subunitValue}
           svgResized={this.state.svgResized}
           fillColor={fillColor}
           borderColor={borderColor}
+          noResize={true}
+          svgWidth={svgWidth}
+          svgHeight={svgHeight}
           mouseEnterOnSubunit={this.handleMouseEnterOnSubunit}
         />
       )

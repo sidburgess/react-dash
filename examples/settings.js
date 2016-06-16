@@ -52,6 +52,7 @@ export var settings = {
         geometry: './data/zones.geojson', // topojson or geojson
         //projection: 'equirectangular', // https://github.com/d3/d3/wiki/Geo-Projections
         projection: 'azimuthalEqualArea', // https://github.com/d3/d3/wiki/Geo-Projections
+        scaleFactor: 30,
         borderColor: '#000000',
         noDataColor: '#F3F3F3',
         startColor: 'red',

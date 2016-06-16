@@ -27,9 +27,11 @@ export default class BaseComponent extends Component {
   }
 
   handleResize() {
-    let componentWidth = findDOMNode(this).getBoundingClientRect().width;
-    this.setState({ componentWidth : componentWidth});
-    this.onResize();
+    if (!this.props.noResize) {
+      let componentWidth = findDOMNode(this).getBoundingClientRect().width;
+      this.setState({ componentWidth : componentWidth});
+      this.onResize();
+    }
   }
 
   onResize() {

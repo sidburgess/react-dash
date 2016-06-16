@@ -12,13 +12,16 @@ export default class DatamapSubunit extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+      console.log(nextState.active !== this.state.active,
+      nextProps.fillColor !== this.props.fillColor,
+      nextProps.borderColor !== this.props.borderColor,
+      nextProps.path !== this.props.path);
     const should = 
-      //nextState.svgResized ||
       nextState.active !== this.state.active ||
       nextProps.fillColor !== this.props.fillColor ||
       nextProps.borderColor !== this.props.borderColor ||
       nextProps.path !== this.props.path
-      console.log(should, this.props, nextProps);
+//      console.log(should, this.props, nextProps);
     return should;
   }
 
@@ -44,7 +47,7 @@ export default class DatamapSubunit extends Component {
       <path
         className="datamap-subunit"
         style={subutniStyle}
-        d={this.props.path()}
+        d={this.props.path}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       />
