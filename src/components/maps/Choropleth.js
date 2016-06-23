@@ -35,9 +35,28 @@ export default class Choropleth extends BaseComponent {
             data.objects[this.props.topologyObject]
           ).features;
         }
-
-        this.setState({geometryFeatures })
+         this.setState({geometryFeatures : geometryFeatures, outerBounds: this.getBounds(geometryFeatures)});
       });
+  }
+  
+  getBounds(geometry) {
+    let outerBounds = [[0,0], [0,0]]; // placeholder values
+    geometry.forEach((g,i) => {
+      let bounds = d3.geo.bounds(g);
+      // initialize values
+      if (i === 0) {
+        outerBounds[0][0] = bounds[0][0];
+        outerBounds[0][1] = bounds[0][1];
+        outerBounds[1][0] = bounds[1][0];
+        outerBounds[1][1] = bounds[1][1];
+      } else {
+        outerBounds[0][0] = Math.min(outerBounds[0][0], bounds[0][0]);
+        outerBounds[0][1] = Math.min(outerBounds[0][1], bounds[0][1]);
+        outerBounds[1][0] = Math.max(outerBounds[1][0], bounds[1][0]);
+        outerBounds[1][1] = Math.max(outerBounds[1][1], bounds[1][1]);
+      }
+    });
+    return outerBounds;
   }
 
   linearScale(min, max) {
@@ -104,16 +123,12 @@ export default class Choropleth extends BaseComponent {
       activeSubunitValue: value,
     });
   }
-  
-  onResize() {
-    this.setState({svgResized: true});
-  }
 
   render() {
-    const svgWidth = this.state.componentWidth * .8;
-    const svgHeight = svgWidth * 0.8;
+    const svgWidth = this.state.componentWidth || 0;
+    const svgHeight = svgWidth * this.props.heightPerCent || 0.8;
     const extremeValues = this.extremeValues();
-
+    console.log('11',svgWidth);
     const {
       infoWindowPos,
       infoWindowActive,
@@ -136,6 +151,7 @@ export default class Choropleth extends BaseComponent {
     const borderColor = this.props.borderColor || '#cccccc';
     const geometryFeatures = this.state.geometryFeatures || [];
     const loading = this.state.geometryFeatures && this.state.data;
+    const offset = this.props.offset || [svgWidth / 2, svgHeight / 2];
 
     const svgStyle = {
       width: svgWidth,
@@ -151,13 +167,13 @@ export default class Choropleth extends BaseComponent {
               <Datamap
                 {...this.props}
                 geometry={geometryFeatures}
+                outerBounds={this.state.outerBounds}
                 colorScale={colorScale}
                 noDataColor={noDataColor}
                 borderColor={borderColor}
                 svgWidth={svgWidth}
                 svgHeight={svgHeight}
-                svgResized={this.state.svgResized}
-                componentWidth={this.state.componentWidth}
+                offset={offset}
                 mouseMoveOnDatamap={this.mouseMoveOnDatamap.bind(this)}
                 mouseEnterOnDatamap={this.mouseEnterOnDatamap.bind(this)}
                 mouseLeaveDatamap={this.mouseLeaveDatamap.bind(this)}

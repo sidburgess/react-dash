@@ -3,8 +3,6 @@ import d3 from 'd3'
 import Registry from '../../utils/Registry';
 import DatamapSubunit from './DatamapSubunit';
 
-
-
 export default class Datamap extends Component {
   constructor(props) {
     super(props)
@@ -28,15 +26,36 @@ export default class Datamap extends Component {
 
     this.setState({ path, geometryFeatures })
   }
-
+  
   path(svgWidth, svgHeight) {
     const projectionName = this.props.projection
     const scaleDenominator = this.props.scaleDenominator
+    const {defaultScale, defaultTranslate, center} = this.getDefaultScale();
+    const scale = this.props.scale || defaultScale;
+    const translate = this.props.translate || defaultTranslate;
 
-    const projection = d3.geo[projectionName]().scale(svgWidth / scaleDenominator)
-      .translate([svgWidth / 2, svgHeight / 2])
+    const projection = d3.geo[projectionName]().scale(scale)
+      .center(center)
+      .translate(translate) // defaults to [480 ,250]
 
     return d3.geo.path().projection(projection)
+  }
+  
+  // solution adapted from https://bl.ocks.org/mbostock/4699541
+  getDefaultScale() {
+    let bounds = this.props.outerBounds;
+		let dx = bounds[1][0] - bounds[0][0];
+    let dy = bounds[1][1] - bounds[0][1];
+    let x = (bounds[0][0] + bounds[1][0]) / 2;
+    let y = (bounds[0][1] + bounds[1][1]) / 2;
+    let width = this.props.svgWidth;
+    let height = width * .8; // aspect ration
+    let scaleFactor = this.props.scaleFactor || 20;
+    let scale =  width / dx * scaleFactor;
+    let translate = [width / 2 + dx, height / 4];
+		console.log('getDefScale', scale, translate);
+		console.log('getDefScaleparams', bounds, scaleFactor, dx, dy, x, y, width, height);
+		return ({defaultScale: scale, defaultTranslate: translate, center: [dx, dy]});
   }
 
   handleMouseEnterOnSubunit(name, value, index) {
@@ -52,7 +71,7 @@ export default class Datamap extends Component {
   }
 
   renderDatamapSubunits() {
-    const { colorScale, noDataColor, borderColor } = this.props
+    const { colorScale, noDataColor, borderColor, svgWidth, svgHeight } = this.props
 
     return this.state.geometryFeatures.map((feature, index) => {
       const key = (this.props.format === 'geojson') ?
@@ -69,13 +88,15 @@ export default class Datamap extends Component {
         <DatamapSubunit
           key={key}
           index={index}
-          path={() => this.state.path(feature)}
+          path={this.state.path(feature)}
           name={String(key)}
           value={subunitValue}
           svgResized={this.state.svgResized}
-          componentWidth={this.props.componentWidth}
           fillColor={fillColor}
           borderColor={borderColor}
+          noResize={true}
+          svgWidth={svgWidth}
+          svgHeight={svgHeight}
           mouseEnterOnSubunit={this.handleMouseEnterOnSubunit}
         />
       )
